@@ -1,4 +1,4 @@
-<img src="https://avatars.githubusercontent.com/u/59437511?s=80&v=4" alt="Exosmium" align="right">
+<img src="https://avatars.githubusercontent.com/u/59437511?s=50&v=4" alt="Exosmium" align="right">
 
 # exoPlayTime
 
