@@ -3,7 +3,6 @@
 # exoPlayTime
 
 Многофункциональный плагин для выдачи наград за время игры в сети серверов. \
-Скоро...  [SpigotMC.org]()
 
 Тестовый сервер: [``DynamiteMc.ru``](https://hotmc.ru/minecraft-server-230011)
 
