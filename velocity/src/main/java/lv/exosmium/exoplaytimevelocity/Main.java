@@ -10,8 +10,10 @@ import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
+import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
 import lv.exosmium.exoplaytimevelocity.listeners.CommandListener;
 import lv.exosmium.exoplaytimevelocity.listeners.EventListener;
+import lv.exosmium.exoplaytimevelocity.listeners.ProxyListener;
 import lv.exosmium.exoplaytimevelocity.managers.ClaimManager;
 import lv.exosmium.exoplaytimevelocity.managers.DatabaseManager;
 import org.slf4j.Logger;
@@ -22,7 +24,6 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -61,6 +62,8 @@ public class Main {
         setupCommand();
         System.out.println("§4§nCoded by§8:§r §cExosmium§7 (vk.com/prodbyhakin)");
         server.getEventManager().register(this, new EventListener(sqLite));
+        server.getEventManager().register(this, new ProxyListener(server));
+        server.getChannelRegistrar().register(MinecraftChannelIdentifier.create("velocity", "hook-cmd"));
     }
 
     private void setupConfig() {
@@ -90,7 +93,7 @@ public class Main {
     private void setupCommand() {
         CommandManager commandManager = server.getCommandManager();
         CommandMeta commandMeta = commandManager.metaBuilder("reward").plugin(this).build();
-        SimpleCommand commandToRegister = new CommandListener(sqLite,claimManager, configRewards, configMessages);
+        SimpleCommand commandToRegister = new CommandListener(sqLite, server, claimManager, configRewards, configMessages);
         commandManager.register(commandMeta, commandToRegister);
     }
 

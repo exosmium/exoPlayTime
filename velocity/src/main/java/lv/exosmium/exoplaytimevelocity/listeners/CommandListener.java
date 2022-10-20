@@ -4,7 +4,9 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.command.SimpleCommand;
+import com.velocitypowered.api.proxy.ConsoleCommandSource;
 import com.velocitypowered.api.proxy.Player;
+import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import lv.exosmium.exoplaytimevelocity.Reward;
 import lv.exosmium.exoplaytimevelocity.managers.ClaimManager;
@@ -21,12 +23,14 @@ import static java.time.temporal.ChronoUnit.SECONDS;
 
 public final class CommandListener implements SimpleCommand {
     private final DatabaseManager sqLite;
+    private final ProxyServer server;
     private final ClaimManager claimManager;
     private final List<Reward> configRewards;
     private final Map<String, Object> configMessages;
 
-    public CommandListener(DatabaseManager sqLite, ClaimManager claimManager, List<Reward> configRewards, Map<String, Object> configMessages) {
+    public CommandListener(DatabaseManager sqLite, ProxyServer server, ClaimManager claimManager, List<Reward> configRewards, Map<String, Object> configMessages) {
         this.sqLite = sqLite;
+        this.server = server;
         this.claimManager = claimManager;
         this.configRewards = configRewards;
         this.configMessages = configMessages;
@@ -36,39 +40,54 @@ public final class CommandListener implements SimpleCommand {
     public void execute(final Invocation invocation) {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
+        Player player = null;
+        Reward rewardToTake = null;
 
-        if (source instanceof Player) {
-            Player player = (Player) source;
-            String username = player.getUsername();
-            Reward rewardToTake = configRewards.get(Integer.parseInt(args[0]) - 1);
+        if (source instanceof Player && args.length == 1) player = (Player) source;
+        else if (source instanceof ConsoleCommandSource && args.length == 2) player = server.getPlayer(args[1]).get();
+        else return;
 
-            if (!enoughTimePlayed(player, rewardToTake)) {
-                sendCooldownMessage(player);
-                return;
-            }
 
-            if (claimManager.hadClaimed(username, rewardToTake.getId())) {
-                sendExistMessage(player);
-                return;
-            }
-
-            RegisteredServer playerServer = player.getCurrentServer().get().getServer();
-            for (String command : rewardToTake.getActions()) {
-                String serverName = command.split("]")[0].split("\\[")[1];
-                String commandToSend = command.replace("{player}", username).split("\\]")[1].replaceFirst("^\\s*", "");
-                sendServerCommand(playerServer, serverName, commandToSend);
-            }
-            sendTitle(player, translateColorCodes(rewardToTake.getTitle().get(0)), translateColorCodes(rewardToTake.getTitle().get(1)), 1, 1, 1);
-            player.sendMessage(Component.text(translateColorCodes(String.valueOf(configMessages.get("given")))));
-            try {
-                claimManager.addClaimed(username, new ArrayList<>(List.of(rewardToTake.getId())));
-            } catch (Exception e) { e.printStackTrace(); }
+        try {
+            rewardToTake = configRewards.get(Integer.parseInt(args[0]) - 1);
+        } catch (IndexOutOfBoundsException ignored) {
+            player.sendMessage(Component.text(translateColorCodes(String.valueOf(configMessages.get("does-not-exist")))));
+            return;
         }
+        rewardPlayer(player, rewardToTake);
     }
+
 
     @Override
     public CompletableFuture<List<String>> suggestAsync(final Invocation invocation) {
         return CompletableFuture.completedFuture(List.of());
+    }
+
+    private void rewardPlayer(Player player, Reward rewardToTake) {
+        String username = player.getUsername();
+        if (!enoughTimePlayed(player, rewardToTake)) {
+            sendCooldownMessage(player);
+            return;
+        }
+
+        if (claimManager.hadClaimed(username, rewardToTake.getId())) {
+            sendExistMessage(player);
+            return;
+        }
+
+        RegisteredServer playerServer = player.getCurrentServer().get().getServer();
+        for (String command : rewardToTake.getActions()) {
+            String serverName = command.split("]")[0].split("\\[")[1];
+            String commandToSend = command.replace("{player}", username).split("\\]")[1].replaceFirst("^\\s*", "");
+            sendServerCommand(playerServer, serverName, commandToSend);
+        }
+        sendTitle(player, translateColorCodes(rewardToTake.getTitle().get(0)), translateColorCodes(rewardToTake.getTitle().get(1)), 1, 1, 1);
+        player.sendMessage(Component.text(translateColorCodes(String.valueOf(configMessages.get("given")))));
+        try {
+            claimManager.addClaimed(username, new ArrayList<>(List.of(rewardToTake.getId())));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void sendCooldownMessage(Player player) {
@@ -106,7 +125,7 @@ public final class CommandListener implements SimpleCommand {
         out.write(serverName.getBytes());
         out.write(":".getBytes());
         out.write(command.getBytes());
-        server.sendPluginMessage(() -> "velocity:runcmd", out.toByteArray());
+        server.sendPluginMessage(() -> "velocity:run-cmd", out.toByteArray());
     }
 
     private void sendTitle(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut) {
