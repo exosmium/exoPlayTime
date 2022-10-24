@@ -15,6 +15,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.TitlePart;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -40,17 +41,23 @@ public final class CommandListener implements SimpleCommand {
     public void execute(final Invocation invocation) {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
-        Player player = null;
-        Reward rewardToTake = null;
+        Player player;
+        Reward rewardToTake;
 
-        if (source instanceof Player && args.length == 1) player = (Player) source;
-        else if (source instanceof ConsoleCommandSource && args.length == 2) player = server.getPlayer(args[1]).get();
-        else return;
+        if (source instanceof Player && args.length == 1) {
+            player = (Player) source;
+        } else if (source instanceof ConsoleCommandSource && args.length == 2) {
+            player = server.getPlayer(args[1]).get();
+        }
+        else {
+            source.sendMessage(Component.text(translateColorCodes("&4&lНагр&c&lады &8&l» &f Напишите /hack, чтобы открыть &cменю наград!")));
+            return;
+        }
 
 
         try {
             rewardToTake = configRewards.get(Integer.parseInt(args[0]) - 1);
-        } catch (IndexOutOfBoundsException ignored) {
+        } catch (Exception ignored) {
             player.sendMessage(Component.text(translateColorCodes(String.valueOf(configMessages.get("does-not-exist")))));
             return;
         }
@@ -70,10 +77,12 @@ public final class CommandListener implements SimpleCommand {
             return;
         }
 
-        if (claimManager.hadClaimed(username, rewardToTake.getId())) {
-            sendExistMessage(player);
-            return;
-        }
+        try {
+            if (claimManager.hadClaimed(username, rewardToTake.getId())) {
+                sendExistMessage(player);
+                return;
+            }
+        } catch (IOException ioException) { ioException.printStackTrace(); }
 
         RegisteredServer playerServer = player.getCurrentServer().get().getServer();
         for (String command : rewardToTake.getActions()) {
@@ -111,7 +120,7 @@ public final class CommandListener implements SimpleCommand {
         for (Object server : reward.getRequiredTime().keySet()) {
             Long playtimeOnServer = playerGlobalPlaytime.get(server);
             long requiredPlaytimeOnServer = Long.parseLong(reward.getRequiredTime().get(server).toString());
-            if (playtimeOnServer == null || playtimeOnServer < requiredPlaytimeOnServer) return false;
+            if (playtimeOnServer == null || playtimeOnServer / 60 < requiredPlaytimeOnServer) return false;
         }
         return true;
     }

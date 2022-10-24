@@ -1,8 +1,6 @@
 package lv.exosmium.exoplaytimevelocity.managers;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.Gson;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -12,6 +10,7 @@ import java.util.Set;
 
 public class ClaimManager {
     private final String dataPath;
+    private final Gson gson = new Gson();
 
     public ClaimManager(Path dataDirectory, String dataFileName) throws IOException {
         this.dataPath = dataDirectory + "/" + dataFileName;
@@ -19,41 +18,52 @@ public class ClaimManager {
         if (!dataFile.exists()) dataFile.createNewFile();
     }
 
-    public boolean hadClaimed(String username, int rewardId) {
-        try {
-            return getJsonRewards(username).contains(rewardId);
-        } catch (Exception ignored) {}
+    private Player[] getJsonPlayers(String filePath, Gson gson) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        String currentLine = reader.readLine();
+        Player[] players = gson.fromJson(currentLine, Player[].class);
+        return players;
+    }
+
+    public boolean hadClaimed(String username, int rewardId) throws IOException {
+        Player[] jsonPlayers = getJsonPlayers(dataPath, gson);
+        if (jsonPlayers != null) {
+            for (Player player : jsonPlayers) {
+                if (player.getUsername().equals(username)) {
+                    if (player.getTaken().contains(rewardId)) return true;
+                }
+            }
+        }
         return false;
     }
 
-    public void addClaimed(String username, List<Integer> rewards) throws JSONException, IOException {
-        JSONObject rewardObject = new JSONObject();
-        JSONObject rewardItem =  new JSONObject();
-        rewards.addAll(getJsonRewards(username));
-        rewardItem.put("claimed_rewards", Set.copyOf(rewards));
-        rewardObject.put(username, rewardItem);
-        writeToJson(rewardObject.toString(), dataPath);
-    }
+    public void addClaimed(String username, List<Integer> rewards) throws IOException {
+        Player[] players = getJsonPlayers(dataPath, gson);
+        List<Player> playerArray = new ArrayList<>();
 
-    private List<Integer> getJsonRewards(String username) throws IOException, JSONException {
-        List<Integer> rewards = new ArrayList<>();
-        try {
-            JSONArray array = readFromJson(dataPath).getJSONObject(username).getJSONArray("claimed_rewards");
-            for (int i = 0; i < array.length(); i++) {
-                rewards.add(array.getInt(i));
+        if (players == null) {
+            playerArray.add(new Player(username, rewards));
+        } else {
+            playerArray.addAll(List.of(players));
+        }
+        if (playerInArray(username, playerArray)) {
+            for (Player player : playerArray) {
+                if (player.getUsername().equals(username)) {
+                    List<Integer> newTaken = player.getTaken();
+                    newTaken.addAll(rewards);
+                    player.setTaken(List.copyOf(Set.copyOf(newTaken)));
+                }
             }
-            return rewards;
-        } catch (Exception ignored) {}
-        return rewards;
+        } else  {
+            playerArray.add(new Player(username, rewards));
+        }
+        FileWriter fileWriter = new FileWriter(dataPath);
+        gson.toJson(playerArray, fileWriter);
+        fileWriter.close();
     }
 
-    private void writeToJson(String text, String path) {
-        try (FileWriter file = new FileWriter(path)) { file.write(text); }
-        catch (Exception e){ e.printStackTrace(); }
-    }
-
-    private JSONObject readFromJson(String path) throws IOException, JSONException {
-        FileReader file = new FileReader(path);
-        return new JSONObject(new BufferedReader(file).readLine());
+    private static boolean playerInArray(String username, List<Player> array) {
+        for (Player player : array) if (player.getUsername().equals(username)) return true;
+        return false;
     }
 }
