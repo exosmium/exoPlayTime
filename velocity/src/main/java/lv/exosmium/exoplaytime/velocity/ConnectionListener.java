@@ -1,21 +1,20 @@
-package lv.exosmium.exoplaytimevelocity.listeners;
+package lv.exosmium.exoplaytime.velocity;
 
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
-import com.velocitypowered.api.event.connection.PluginMessageEvent;
 import com.velocitypowered.api.event.player.ServerConnectedEvent;
 import com.velocitypowered.api.proxy.Player;
-import lv.exosmium.exoplaytimevelocity.managers.DatabaseManager;
+import lv.exosmium.exoplaytime.mysql.SQLManager;
 
 import java.util.HashMap;
 
-public class EventListener {
-    private final DatabaseManager sqLite;
+public class ConnectionListener {
+    private final SQLManager sqlManager;
     private HashMap<Player, Long> timeData = new HashMap<>();
     private HashMap<Player, String> lastServerData = new HashMap<>();
 
-    public EventListener(DatabaseManager sqLite) {
-        this.sqLite = sqLite;
+    public ConnectionListener(SQLManager sqlManager) {
+        this.sqlManager = sqlManager;
     }
 
     @Subscribe
@@ -30,7 +29,7 @@ public class EventListener {
 
         long currentTime = System.currentTimeMillis();
         String username = player.getUsername();
-        sqLite.addPlaytime(username, lastServerData.get(player), currentTime - timeData.get(player));
+        sqlManager.addPlaytime(username, lastServerData.get(player), currentTime - timeData.get(player));
         timeData.replace(player, currentTime);
         lastServerData.replace(player, lastServerName);
     }
@@ -41,8 +40,7 @@ public class EventListener {
         if (timeData.containsKey(player) && lastServerData.containsKey(player)) {
             long currentTime = System.currentTimeMillis();
             String username = player.getUsername();
-
-            sqLite.addPlaytime(username, lastServerData.get(player), currentTime - timeData.get(player));
+            sqlManager.addPlaytime(username, lastServerData.get(player), currentTime - timeData.get(player));
             timeData.remove(username);
             lastServerData.remove(username);
         }

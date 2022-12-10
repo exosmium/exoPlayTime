@@ -1,1 +1,1 @@
-{"id":"exoplaytimevelocity","name":"exoPlayTimeVelocity","version":"1.0","description":"Quality made tool for playtime managment.","authors":["exosmium"],"dependencies":[],"main":"lv.exosmium.exoplaytimevelocity.Main"}
+{"id":"exoplaytime","name":"exoPlayTimeVelocity","version":"1.0","description":"Quality made tool for playtime managment.","authors":["exosmium"],"dependencies":[],"main":"lv.exosmium.exoplaytimevelocity.Main"}

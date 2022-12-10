@@ -1,13 +1,13 @@
-package lv.exosmium.exoplaytimevelocity.listeners;
+package lv.exosmium.exoplaytime.velocity;
 
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.PluginMessageEvent;
 import com.velocitypowered.api.proxy.ProxyServer;
 
-public class ProxyListener {
+public class ChannelListener {
     private final ProxyServer server;
 
-    public ProxyListener(ProxyServer server) {
+    public ChannelListener(ProxyServer server) {
         this.server = server;
     }
 

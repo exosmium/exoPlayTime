@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e14c8253-db23-4c16-a6de-52e6ff07bd13" name="Changes" comment="" />
+    <list default="true" id="e14c8253-db23-4c16-a6de-52e6ff07bd13" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../velocity/src/main/java/lv/exosmium/exoplaytimevelocity/SQlite.java" beforeDir="false" afterPath="$PROJECT_DIR$/../velocity/src/main/java/lv/exosmium/exoplaytimevelocity/API/SQlite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../velocity/src/main/java/lv/exosmium/exoplaytimevelocity/managers/DatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/../velocity/src/main/java/lv/exosmium/exoplaytimevelocity/managers/DatabaseManager.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,6 +21,9 @@
         <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -29,6 +37,7 @@
     </option>
   </component>
   <component name="ProjectId" id="2GAIb524FzHPAjsqzYuh66lzoPz" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -135,6 +144,9 @@
       <workItem from="1665920049550" duration="11780000" />
       <workItem from="1666195743448" duration="812000" />
       <workItem from="1666196748879" duration="8702000" />
+      <workItem from="1666781014759" duration="27000" />
+      <workItem from="1666782493216" duration="6000" />
+      <workItem from="1666876319658" duration="601000" />
     </task>
     <servers />
   </component>

@@ -1,0 +1,6 @@
+# Параметры подключения к базе данных
+Database:
+    database: exoPlayTime
+    address: 'localhost:3306'
+    username: root
+    password: "123"
