@@ -1,0 +1,10 @@
+name: exoPlayTime
+version: '${project.version}'
+main: lv.exosmium.exoplaytime.spigot.SpigotPlugin
+api-version: 1.16
+depend: ["PlaceholderAPI"]
+commands:
+  reward:
+  moveto:
+  moveotherto:
+  runcmd:

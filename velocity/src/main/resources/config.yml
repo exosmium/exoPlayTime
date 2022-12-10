@@ -1,0 +1,258 @@
+# Синхронизация между серверами
+# В данный момент плагин не поддерживает
+# режим одиночной работы.
+sync: true
+
+# Параметры подключения к базе данных
+Database:
+  database: exoPlayTime
+  address: 'localhost:3306'
+  username: root
+  password: "123"
+
+# Параметры сообщений плагина
+Messages:
+  cooldown: '&4&lНагр&c&lады &8&l» &f Поиграйте еще, чтобы получить данную награду!'
+  exist: '&4&lНагр&c&lады &8&l» &f Вы уже получили &6данную награду.'
+  given: '&4&lНагр&c&lады &8&l» &f Награда была успешно выдана!'
+  does-not-exist: '&4&lНагр&c&lады &8&l» &f Данной награды &cне существует!'
+  cooldown-title:
+    - '&4&lОй...'
+    - 'Поиграйте еще, чтобы получить &cэту награду.'
+  exist-title:
+    - '&6&lХе-хе!'
+    - "Вы уже получили &eданную награду."
+
+# Награды за время игры
+Rewards:
+  '1':
+    actions:
+      - '[survival] crazycrates give v free 1 {player}'
+      - '[survival] eco give {player} 5000'
+    title:
+      - '&6&lБуууум!'
+      - "Вы получили &eнаграду!"
+    required-time:
+      survival: 300
+      tntrun: 60
+  '2':
+    actions:
+      - '[survival] crazycrates give v free 1 {player}'
+      - '[survival] eco give {player} 5000'
+    title:
+      - '&6&lБуууум!'
+      - "Вы получили &eнаграду!"
+    required-time:
+      survival: 900
+      tntrun: 300
+  '3':
+    actions:
+      - '[survival] crazycrates give v free 1 {player}'
+      - '[survival] points give {player} 10'
+      - '[survival] eco give {player} 5000'
+      - '[tntrun] eco give {player} 5'
+    title:
+      - '&6&lБуууум!'
+      - "Вы получили &eнаграду!"
+    required-time:
+      survival: 1500
+      tntrun: 600
+  '4':
+    actions:
+      - '[survival] crazycrates give v free 1 {player}'
+      - '[survival] eco give {player} 5000'
+      - '[tntrun] tntrunconsole givedoublejumps {player} 1'
+    title:
+      - '&6&lБуууум!'
+      - "Вы получили &eнаграду!"
+    required-time:
+      survival: 2700
+      tntrun: 900
+  '5':
+    actions:
+      - '[survival] crazycrates give v free 1 {player}'
+      - '[survival] eco give {player} 5000'
+    title:
+      - '&6&lБуууум!'
+      - "Вы получили &eнаграду!"
+    required-time:
+      survival: 3600
+      tntrun: 1200
+  '6':
+    actions:
+      - '[survival] crazycrates give v free 1 {player}'
+      - '[survival] eco give {player} 5000'
+    title:
+      - '&6&lБуууум!'
+      - "Вы получили &eнаграду!"
+    required-time:
+      survival: 4500
+      tntrun: 1500
+  '7':
+    actions:
+      - '[survival] lp user {player} group add creative'
+      - '[survival] crazycrates give v free 5 {player}'
+      - '[survival] eco give {player} 25000'
+      - '[survival] points give {player} 15'
+      - '[tntrun] tntrunconsole givedoublejumps {player} 5'
+      - '[tntrun] eco give {player} 15'
+    title:
+      - '&6&lБуууум!'
+      - "Вы получили &eнаграду!"
+    required-time:
+      survival: 5400
+      tntrun: 1800
+  '8':
+    actions:
+      - '[survival] crazycrates give v free 1 {player}'
+      - '[survival] eco give {player} 15000'
+    title:
+      - '&6&lБуууум!'
+      - "Вы получили &eнаграду!"
+    required-time:
+      survival: 6300
+      tntrun: 2100
+  '9':
+    actions:
+      - '[survival] crazycrates give v free 1 {player}'
+      - '[survival] eco give {player} 15000'
+    title:
+      - '&6&lБуууум!'
+      - "Вы получили &eнаграду!"
+    required-time:
+      survival: 7200
+      tntrun: 2400
+  '10':
+    actions:
+      - '[survival] crazycrates give v free 3 {player}'
+      - '[survival] points give {player} 10'
+      - '[survival] eco give {player} 15000'
+      - '[tntrun] eco give {player} 15'
+    title:
+      - '&6&lБуууум!'
+      - "Вы получили &eнаграду!"
+    required-time:
+      survival: 8100
+      tntrun: 2700
+  '11':
+    actions:
+      - '[survival] crazycrates give v free 1 {player}'
+      - '[survival] eco give {player} 15000'
+      - '[tntrun] tntrunconsole givedoublejumps {player} 3'
+    title:
+      - '&6&lБуууум!'
+      - "Вы получили &eнаграду!"
+    required-time:
+      survival: 9000
+      tntrun: 3000
+  '12':
+    actions:
+      - '[survival] crazycrates give v free 1 {player}'
+      - '[survival] eco give {player} 15000'
+    title:
+      - '&6&lБуууум!'
+      - "Вы получили &eнаграду!"
+    required-time:
+      survival: 9900
+      tntrun: 3300
+  '13':
+    actions:
+      - '[survival] crazycrates give v free 1 {player}'
+      - '[survival] eco give {player} 15000'
+    title:
+      - '&6&lБуууум!'
+      - "Вы получили &eнаграду!"
+    required-time:
+      survival: 10800
+      tntrun: 3600
+  '14':
+    actions:
+      - '[survival] lp user {player} group add moder'
+      - '[survival] crazycrates give v free 10 {player}'
+      - '[survival] eco give {player} 100000'
+      - '[survival] points give {player} 25'
+      - '[tntrun] tntrunconsole givedoublejumps {player} 7'
+      - '[tntrun] eco give {player} 45'
+    title:
+      - '&6&lБуууум!'
+      - "Вы получили &eнаграду!"
+    required-time:
+      survival: 18000
+      tntrun: 6000
+  '15':
+    actions:
+      - '[survival] crazycrates give v free 1 {player}'
+      - '[survival] eco give {player} 25000'
+    title:
+      - '&6&lБуууум!'
+      - "Вы получили &eнаграду!"
+    required-time:
+      survival: 23400
+      tntrun: 7800
+  '16':
+    actions:
+      - '[survival] crazycrates give v free 1 {player}'
+      - '[survival] eco give {player} 25000'
+    title:
+      - '&6&lБуууум!'
+      - "Вы получили &eнаграду!"
+    required-time:
+      survival: 28800
+      tntrun: 9600
+  '17':
+    actions:
+      - '[survival] crazycrates give v free 3 {player}'
+      - '[survival] points give {player} 10'
+      - '[survival] eco give {player} 25000'
+      - '[tntrun] eco give {player} 25'
+    title:
+      - '&6&lБуууум!'
+      - "Вы получили &eнаграду!"
+    required-time:
+      survival: 32400
+      tntrun: 11400
+  '18':
+    actions:
+      - '[survival] crazycrates give v free 1 {player}'
+      - '[survival] eco give {player} 25000'
+      - '[tntrun] tntrunconsole givedoublejumps {player} 3'
+    title:
+      - '&6&lБуууум!'
+      - "Вы получили &eнаграду!"
+    required-time:
+      survival: 39600
+      tntrun: 13200
+  '19':
+    actions:
+      - '[survival] crazycrates give v free 1 {player}'
+      - '[survival] eco give {player} 25000'
+    title:
+      - '&6&lБуууум!'
+      - "Вы получили &eнаграду!"
+    required-time:
+      survival: 46800
+      tntrun: 15600
+  '20':
+    actions:
+      - '[survival] crazycrates give v free 1 {player}'
+      - '[survival] eco give {player} 25000'
+    title:
+      - '&6&lБуууум!'
+      - "Вы получили &eнаграду!"
+    required-time:
+      survival: 54000
+      tntrun: 18000
+  '21':
+    actions:
+      - '[survival] lp user {player} group add enigma'
+      - '[survival] crazycrates give v free 25 {player}'
+      - '[survival] eco give {player} 250000'
+      - '[survival] points give {player} 50'
+      - '[tntrun] tntrunconsole givedoublejumps {player} 15'
+      - '[tntrun] eco give {player} 75'
+    title:
+      - '&6&lБуууум!'
+      - "Вы получили &eнаграду!"
+    required-time:
+      survival: 72000
+      tntrun: 25200
